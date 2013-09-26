@@ -81,13 +81,14 @@ public class MainActivity extends Activity implements LocationNeeder {
 	private void send() {
 		String number = "+421907351787";
 		String text = getSMSText();
-		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.fromParts(text,
+		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms",
 				number, null));
+		intent.putExtra("sms_body", text);
 		startActivity(intent);
 	}
 
 	private String getSMSText() {
-		return "sms text";
+		return "test";//"lat: " + location.getLatitude() + " long: " + location.getLongitude();
 	}
 
 }
