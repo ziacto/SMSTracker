@@ -36,6 +36,7 @@ public class MainActivity extends Activity implements LocationNeeder {
 		super.onResume();
 		Log.d(TAG, "acquire location");
 		progressBar.setVisibility(View.VISIBLE);
+		signIcon.setImageResource(R.drawable.ic_warn);
 		location = null;
 		tracker.acquireLocation();
 	}
@@ -73,6 +74,7 @@ public class MainActivity extends Activity implements LocationNeeder {
 	public void locationChanged(Location location) {
 		Log.d(TAG, "locationChanged");
 		progressBar.setVisibility(View.INVISIBLE);
+		signIcon.setImageResource(R.drawable.ic_tick);
 		this.location = location;
 	}
 
