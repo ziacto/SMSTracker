@@ -7,6 +7,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -19,31 +21,60 @@ public class MainActivity extends Activity implements LocationNeeder {
 	public static final String SUPER_TAG = "SMSTracker.";
 	private static final String TAG = SUPER_TAG + "MainActivity";
 	private static final CharSequence NO_GPS_FIX = "Ešte nechytil satelity";
+	public static final String AUTHORIZED_NUM = "+421944626924";
 	private ProgressBar progressBar;
 	private Tracker tracker;
 	private Location location;
 	private ImageView signIcon;
+	private PhoneListener phoneListener;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		initViewFields();
+		initFields();
+		startListeningForCalls();
+	}
+
+	private void startListeningForCalls() {
+		TelephonyManager manager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+		manager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
+	}
+
+	private void initFields() {
 		tracker = new Tracker(this, this);
+		phoneListener = new PhoneListener(this);
 	}
 
 	protected void onResume() {
 		super.onResume();
-		Log.d(TAG, "acquire location");
 		progressBar.setVisibility(View.VISIBLE);
 		signIcon.setImageResource(R.drawable.ic_warn);
 		location = null;
-		tracker.acquireLocation();
+//		tracker.acquireLocation();
 	}
 
 	protected void onPause() {
 		super.onPause();
 		tracker.cancelUpdates();
+		if (isFinishing()) {
+			Log.d(TAG, "finishing, stopping listener");
+			stopListeningForCalls();
+			stopLocationService();
+		}
+	}
+
+	private void stopLocationService() {
+		Intent intent = new Intent(this, LocationService.class);
+		if (stopService(intent)) {
+			Log.d(TAG, "location service stopped");
+		}
+	}
+
+	private void stopListeningForCalls() {
+		TelephonyManager manager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+		manager.listen(phoneListener, PhoneStateListener.LISTEN_NONE);
 	}
 
 	private void initViewFields() {
@@ -88,7 +119,7 @@ public class MainActivity extends Activity implements LocationNeeder {
 	}
 
 	private String getSMSText() {
-		return "test";//"lat: " + location.getLatitude() + " long: " + location.getLongitude();
+		return "lat: " + location.getLatitude() + " long: " + location.getLongitude();
 	}
 
 }
