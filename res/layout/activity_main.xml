@@ -13,17 +13,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/acquire"
         android:text="@string/send_text"
         android:onClick="sendCoords" />
-
-    <ImageView
-        android:id="@+id/signIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/sendButton"
-        android:src="@drawable/ic_warn" />
 
     <ProgressBar
         android:id="@+id/progressBar1"
@@ -31,5 +23,22 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/signIcon"
         android:layout_toLeftOf="@+id/signIcon" />
+
+    <Button
+        android:id="@+id/acquire"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:onClick="acquireCoords"
+        android:text="@string/acquire_text" />
+
+    <ImageView
+        android:id="@+id/signIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/acquire"
+        android:src="@drawable/ic_warn" />
 
 </RelativeLayout>

@@ -49,7 +49,7 @@ public class MainActivity extends Activity implements LocationNeeder {
 
 	protected void onResume() {
 		super.onResume();
-		progressBar.setVisibility(View.VISIBLE);
+		progressBar.setVisibility(View.INVISIBLE);
 		signIcon.setImageResource(R.drawable.ic_warn);
 		location = null;
 //		tracker.acquireLocation();
@@ -88,6 +88,11 @@ public class MainActivity extends Activity implements LocationNeeder {
 		return true;
 	}
 
+	public void acquireCoords(View view) {
+		progressBar.setVisibility(View.VISIBLE);
+		tracker.acquireLocation();
+	}
+	
 	public void sendCoords(View view) {
 		Log.d(TAG, "send sms");
 		if (location != null) {
